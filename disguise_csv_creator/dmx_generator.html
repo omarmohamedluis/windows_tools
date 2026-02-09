@@ -1,0 +1,181 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>OmiLED Mapper V3.7</title>
+    <link rel="stylesheet" href="static/style.css">
+</head>
+
+<body>
+
+    <!-- Hidden Input for Import -->
+    <input type="file" id="importFile" accept=".csv" style="display:none" onchange="loadCSV(this)">
+
+    <div id="sidebar">
+        <h2>
+            OmiLED Mapper
+            <button class="reset-btn" onclick="resetProject()" title="New Project">NEW</button>
+        </h2>
+
+        <div class="section">
+            <h3>Grid <span id="current-dim" style="float:right; opacity:0.5; font-size:0.8em"></span></h3>
+            <div class="row">
+                <div class="input-group"><label>W</label><input type="number" id="gridW" value="10" min="1"></div>
+                <div class="input-group"><label>H</label><input type="number" id="gridH" value="10" min="1"></div>
+            </div>
+            <button onclick="updateGrid()" style="margin-top:5px">Update Grid</button>
+        </div>
+
+        <div class="section">
+            <h3>Selection</h3>
+            <div class="row">
+                <button onclick="selectAll()">All</button>
+                <button onclick="clearSelection()" title="Esc">Clear</button>
+            </div>
+            <div style="font-size: 0.8em; margin-top: 5px; text-align: center; color: #888;">
+                Click, Ctrl+Click, Shift+Click
+            </div>
+        </div>
+
+        <div class="section">
+            <h3>Patching</h3>
+            <div class="row">
+                <div class="input-group"><label>Start Uni</label><input type="number" id="startUni" value="1" min="1">
+                </div>
+                <div class="input-group"><label>Start Addr</label><input type="number" id="startAddr" value="1" min="1"
+                        max="512"></div>
+            </div>
+            <div class="input-group" style="margin-top: 5px;">
+                <label>Channels/Pixel</label>
+                <input type="number" id="chPerPixel" value="3" min="1">
+            </div>
+            <div class="input-group" style="margin-top: 5px;">
+                <label>Order</label>
+                <select id="patchOrder">
+                    <option value="selection">Selection Order</option>
+                    <option value="rowMajor">Row Major (Top-Left &rarr;)</option>
+                    <option value="rowMajorTR">Row Major (Top-Right &larr;)</option>
+                    <option value="rowMajorBL">Row Major (Bot-Left &rarr;)</option>
+                    <option value="rowMajorBR">Row Major (Bot-Right &larr;)</option>
+                    <option value="colMajor">Col Major (Top-Left &darr;)</option>
+                    <option value="colMajorTR">Col Major (Top-Right &darr;)</option>
+                    <option value="colMajorBL">Col Major (Bot-Left &uarr;)</option>
+                    <option value="colMajorBR">Col Major (Bot-Right &uarr;)</option>
+                    <option value="snakeRows">Snake Rows (ZigZag)</option>
+                </select>
+            </div>
+            <div class="row" style="margin-top: 10px;">
+                <button class="primary" onclick="applyPatch()">APPLY PATCH</button>
+            </div>
+            <div class="row" style="margin-top: 5px;">
+                <button class="danger" onclick="removePatch()">REMOVE PATCH</button>
+            </div>
+        </div>
+
+        <div class="section">
+            <h3>Export / Import</h3>
+            <div class="input-group">
+                <label>Filename</label>
+                <input type="text" id="exportName" value="dmx_patch" placeholder="dmx_patch">
+            </div>
+            <div class="row" style="margin-top: 5px;">
+                <button class="primary" onclick="downloadCSV()">DOWNLOAD CSV</button>
+            </div>
+            <div class="row" style="margin-top: 5px;">
+                <button onclick="document.getElementById('importFile').click()">IMPORT CSV</button>
+            </div>
+            <button onclick="clearAllPatches()" style="margin-top: 15px; background: #522; font-size: 0.7em;">Clear ALL
+                Patches</button>
+        </div>
+
+        <div style="flex-grow:1"></div>
+        <div class="row" style="margin-top: 10px;">
+            <button onclick="toggleHelp()"
+                style="width: 100%; border: 1px solid #555; background:transparent; color: #aaa;">? Help</button>
+        </div>
+        <div style="font-size: 0.7em; color: #555; text-align: center; margin-top:5px">v3.7</div>
+    </div>
+
+    <div id="resizer"></div>
+
+    <div id="main-viewport">
+        <!-- Scroll Container -->
+        <div id="grid-container-wrapper">
+            <!-- Padded Content Layer -->
+            <div id="grid-content">
+                <div class="ruler-corner"></div>
+                <div class="ruler-top" id="ruler-top"></div>
+                <div class="ruler-left" id="ruler-left"></div>
+                <div id="pixel-grid"></div>
+            </div>
+        </div>
+
+        <div id="zoom-controls">
+            <button onclick="changeZoom(1)" title="Zoom In">+</button>
+            <button onclick="resetView()" title="Reset View" style="font-size: 0.8em;">⟲</button>
+            <button onclick="changeZoom(-1)" title="Zoom Out">-</button>
+        </div>
+
+        <div id="legend">
+            <div style="border-bottom: 1px solid #333; margin-bottom: 5px; padding-bottom: 2px; font-weight: bold;">
+                SELECTED PIXEL</div>
+            <div id="lg-pos">Pos: -</div>
+            <div id="lg-idx">Index: -</div>
+            <div id="lg-dmx">DMX: <span style="color:#666">Not Patched</span></div>
+            <div style="margin-top: 5px; font-size: 0.9em; opacity: 0.7;" id="lg-sel-count">0 Selected</div>
+        </div>
+    </div>
+
+    <!-- Help Modal -->
+    <div id="helpModal" class="modal-overlay" onclick="if(event.target===this) toggleHelp()">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h2>OmiLED Mapper Guide</h2>
+                <button class="close-btn" onclick="toggleHelp()">&times;</button>
+            </div>
+
+            <h3>Navigation</h3>
+            <ul style="line-height: 1.8;">
+                <li><span class="key-tag">Left Click Drag</span> (on background) Pan Grid</li>
+                <li><span class="key-tag">Middle Click Drag</span> Pan Grid Anywhere</li>
+                <li><span class="key-tag">Wheel</span> Vertical Scroll</li>
+                <li><span class="key-tag">Shift</span> + <span class="key-tag">Wheel</span> Horizontal Scroll</li>
+                <li><span class="key-tag">Zoom Controls</span> (+/-) Bottom-Left</li>
+            </ul>
+
+            <h3>Shortcuts</h3>
+            <ul style="line-height: 1.8;">
+                <li><span class="key-tag">Arrows</span> Move Selection</li>
+                <li><span class="key-tag">Ctrl</span> + <span class="key-tag">Arrows</span> Multi-Select (Add)</li>
+                <li><span class="key-tag">Shift</span> + <span class="key-tag">Click</span> Range Select (Directional)
+                </li>
+                <li><span class="key-tag">Ctrl</span> + <span class="key-tag">Click</span> Toggle Selection</li>
+                <li><span class="key-tag">Ctrl</span> + <span class="key-tag">A</span> Select All</li>
+                <li><span class="key-tag">Esc</span> Clear Selection</li>
+                <li><span class="key-tag">Ctrl</span> + <span class="key-tag">Z</span> Undo</li>
+                <li><span class="key-tag">Ctrl</span> + <span class="key-tag">Shift</span> + <span
+                        class="key-tag">Z</span> Redo</li>
+            </ul>
+
+            <h3>Workflow</h3>
+            <ol style="line-height: 1.6;">
+                <li><strong>Define Grid</strong>: Set Width/Height. (Updates don't destroy patches).</li>
+                <li><strong>Select Pixels</strong>: Use mouse or keyboard.</li>
+                <li><strong>Patch</strong>: Set Start Universe/Channel. Choose Order. Click <strong>APPLY
+                        PATCH</strong>.</li>
+                <li><strong>Review</strong>: Check specific pixels in the legend below sidebar.</li>
+                <li><strong>Export</strong>: Save as CSV for Disguise.</li>
+            </ol>
+
+            <p style="font-size:0.9em; color:#888; margin-top:20px; text-align:center;">
+                OmiLED Mapper v3.7
+            </p>
+        </div>
+    </div>
+
+    <script src="static/script.js"></script>
+</body>
+
+</html>

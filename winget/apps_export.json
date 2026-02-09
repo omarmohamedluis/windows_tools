@@ -1,0 +1,236 @@
+{
+	"$schema" : "https://aka.ms/winget-packages.schema.2.0.json",
+	"CreationDate" : "2025-11-27T14:30:46.532-00:00",
+	"Sources" : 
+	[
+		{
+			"Packages" : 
+			[
+				{
+					"PackageIdentifier" : "CoreyButler.NVMforWindows",
+					"Version" : "1.1.12"
+				},
+				{
+					"PackageIdentifier" : "7zip.7zip",
+					"Version" : "25.01"
+				},
+				{
+					"PackageIdentifier" : "Microsoft.OneDrive",
+					"Version" : "25.209.1026.0002"
+				},
+				{
+					"PackageIdentifier" : "Cockos.REAPER",
+					"Version" : "7.54"
+				},
+				{
+					"PackageIdentifier" : "PreSonus.UniversalControl",
+					"Version" : "4.6.1.104762"
+				},
+				{
+					"PackageIdentifier" : "Apple.BonjourPrintServices",
+					"Version" : "2.0.2.0"
+				},
+				{
+					"PackageIdentifier" : "Microsoft.VCRedist.2010.x64",
+					"Version" : "10.0.40219"
+				},
+				{
+					"PackageIdentifier" : "NDI.NDITools",
+					"Version" : "6.2.1.0"
+				},
+				{
+					"PackageIdentifier" : "BlenderFoundation.Blender",
+					"Version" : "5.0.0"
+				},
+				{
+					"PackageIdentifier" : "RaspberryPiFoundation.RaspberryPiImager",
+					"Version" : "v2.0.0"
+				},
+				{
+					"PackageIdentifier" : "Wibu-Systems.CodeMeterRuntimeKit",
+					"Version" : "8.40.7109.500"
+				},
+				{
+					"PackageIdentifier" : "RealVNC.VNCViewer",
+					"Version" : "7.15.1.18"
+				},
+				{
+					"PackageIdentifier" : "Apple.Bonjour",
+					"Version" : "3.0.0.10"
+				},
+				{
+					"PackageIdentifier" : "Logitech.OptionsPlus",
+					"Version" : "1.97.791262"
+				},
+				{
+					"PackageIdentifier" : "OpenJS.NodeJS.20",
+					"Version" : "20.19.6"
+				},
+				{
+					"PackageIdentifier" : "EpicGames.EpicGamesLauncher",
+					"Version" : "1.3.161.0"
+				},
+				{
+					"PackageIdentifier" : "ViGEm.ViGEmBus",
+					"Version" : "1.22.0"
+				},
+				{
+					"PackageIdentifier" : "Microsoft.PowerToys",
+					"Version" : "0.96.1"
+				},
+				{
+					"PackageIdentifier" : "Adobe.Acrobat.Reader.64-bit",
+					"Version" : "25.001.20937"
+				},
+				{
+					"PackageIdentifier" : "Nvidia.PhysX",
+					"Version" : "9.23.1019"
+				},
+				{
+					"PackageIdentifier" : "Marvell.AQtionAqnic650",
+					"Version" : "3.1.10.0"
+				},
+				{
+					"PackageIdentifier" : "Adobe.CreativeCloud",
+					"Version" : "6.8.0.821"
+				},
+				{
+					"PackageIdentifier" : "Google.Chrome.EXE",
+					"Version" : "142.0.7444.176"
+				},
+				{
+					"PackageIdentifier" : "Microsoft.Edge",
+					"Version" : "142.0.3595.94"
+				},
+				{
+					"PackageIdentifier" : "NetSetMan.NetSetMan",
+					"Version" : "5.4.0"
+				},
+				{
+					"PackageIdentifier" : "Valve.Steam",
+					"Version" : "2.10.91.91"
+				},
+				{
+					"PackageIdentifier" : "WiresharkFoundation.Wireshark",
+					"Version" : "4.6.1"
+				},
+				{
+					"PackageIdentifier" : "Microsoft.DotNet.Framework.DeveloperPack.4.6",
+					"Version" : "> 4.6.2"
+				},
+				{
+					"PackageIdentifier" : "Microsoft.VCRedist.2013.x64",
+					"Version" : "12.0.40664.0"
+				},
+				{
+					"PackageIdentifier" : "Microsoft.DotNet.DesktopRuntime.6",
+					"Version" : "6.0.36"
+				},
+				{
+					"PackageIdentifier" : "Microsoft.VCRedist.2015+.x86",
+					"Version" : "14.50.35719.0"
+				},
+				{
+					"PackageIdentifier" : "Microsoft.DotNet.SDK.8",
+					"Version" : "8.0.416"
+				},
+				{
+					"PackageIdentifier" : "DYMO.DYMOConnect",
+					"Version" : "1.5.1.20"
+				},
+				{
+					"PackageIdentifier" : "Famatech.AdvancedIPScanner",
+					"Version" : "2.5.4594.1"
+				},
+				{
+					"PackageIdentifier" : "Microsoft.WindowsSDK.10.0.20348",
+					"Version" : "10.0.20348.1"
+				},
+				{
+					"PackageIdentifier" : "Python.Launcher",
+					"Version" : "3.13.5"
+				},
+				{
+					"PackageIdentifier" : "Microsoft.AccessDatabaseEngine.2016",
+					"Version" : "16.0.5044.1000"
+				},
+				{
+					"PackageIdentifier" : "Microsoft.VCRedist.2015+.x64",
+					"Version" : "14.50.35719.0"
+				},
+				{
+					"PackageIdentifier" : "Audinate.DanteVia",
+					"Version" : "1.3.2.1"
+				},
+				{
+					"PackageIdentifier" : "Microsoft.VCRedist.2013.x86",
+					"Version" : "12.0.40664.0"
+				},
+				{
+					"PackageIdentifier" : "Apple.AppleSoftwareUpdate",
+					"Version" : "2.7.0.3"
+				},
+				{
+					"PackageIdentifier" : "Apple.AppleApplicationSupport.x86",
+					"Version" : "8.7"
+				},
+				{
+					"PackageIdentifier" : "Apple.QuickTime",
+					"Version" : "7.79.80.95"
+				},
+				{
+					"PackageIdentifier" : "Postman.Postman",
+					"Version" : "11.73.4"
+				},
+				{
+					"PackageIdentifier" : "Zoom.Zoom.EXE",
+					"Version" : "6.6.10 (22255)"
+				},
+				{
+					"PackageIdentifier" : "Microsoft.VisualStudioCode",
+					"Version" : "1.105.1"
+				},
+				{
+					"PackageIdentifier" : "Python.Python.3.12",
+					"Version" : "3.12.10"
+				},
+				{
+					"PackageIdentifier" : "Microsoft.Teams",
+					"Version" : "25306.804.4102.7193"
+				},
+				{
+					"PackageIdentifier" : "Microsoft.AppInstaller",
+					"Version" : "1.27.350.0"
+				},
+				{
+					"PackageIdentifier" : "Microsoft.UI.Xaml.2.7",
+					"Version" : "7.2409.9001.0"
+				},
+				{
+					"PackageIdentifier" : "Microsoft.UI.Xaml.2.8",
+					"Version" : "8.2501.31001.0"
+				},
+				{
+					"PackageIdentifier" : "Microsoft.VCLibs.Desktop.14",
+					"Version" : "14.0.33728.0"
+				},
+				{
+					"PackageIdentifier" : "Microsoft.WindowsTerminal",
+					"Version" : "1.23.12811.0"
+				},
+				{
+					"PackageIdentifier" : "Microsoft.Teams.Free",
+					"Version" : "25306.704.4082.2816"
+				}
+			],
+			"SourceDetails" : 
+			{
+				"Argument" : "https://cdn.winget.microsoft.com/cache",
+				"Identifier" : "Microsoft.Winget.Source_8wekyb3d8bbwe",
+				"Name" : "winget",
+				"Type" : "Microsoft.PreIndexed.Package"
+			}
+		}
+	],
+	"WinGetVersion" : "1.12.350"
+}
