@@ -1,0 +1,135 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Omi FrameSync</title>
+    <link rel="stylesheet" href="style.css">
+    <link href="https://fonts.googleapis.com/css2?family=Outfit:wght@300;400;600&display=swap" rel="stylesheet">
+
+    <!-- Ionicons for media controls -->
+    <script type="module" src="https://unpkg.com/ionicons@7.1.0/dist/ionicons/ionicons.esm.js"></script>
+    <script nomodule src="https://unpkg.com/ionicons@7.1.0/dist/ionicons/ionicons.js"></script>
+
+    <!-- MediaInfo.js for parsing metadata -->
+    <script src="https://unpkg.com/mediainfo.js/dist/mediainfo.min.js"></script>
+
+    <!-- WaveSurfer.js for audio waveform -->
+    <script src="https://unpkg.com/wavesurfer.js@7"></script>
+    <script src="https://unpkg.com/wavesurfer.js@7/dist/plugins/timeline.min.js"></script>
+</head>
+
+<body>
+    <div class="background-animation"></div>
+
+    <!-- Drag & Drop Overlay (Initial Screen) -->
+    <div id="dropzone" class="dropzone active">
+        <div class="dropzone-content">
+            <ion-icon name="cloud-upload-outline"></ion-icon>
+            <h2>Drag & Drop Video Here</h2>
+            <p>Supports .mov, .mp4 (with embedded audio)</p>
+            <label for="initial-video-upload" class="btn btn-primary mt-4">Browse Files</label>
+            <input type="file" id="initial-video-upload" accept="video/mp4,video/quicktime,video/x-m4v,video/*">
+            <div id="loading-metadata" class="loading-text" style="display: none;">
+                <ion-icon name="sync-outline" class="spin"></ion-icon> Extracting video metadata...
+            </div>
+        </div>
+    </div>
+
+    <!-- Main Application Interface (Hidden initially) -->
+    <div id="app-container" style="display: none; width: 100%;">
+        <header>
+            <h1>Omi FrameSync <span>// Offset Calculator</span></h1>
+        </header>
+
+        <main class="container">
+            <!-- Settings Panel -->
+            <section class="glass-panel settings-panel">
+                <div class="header-flex">
+                    <h2><ion-icon name="options-outline"></ion-icon> Framerate Settings</h2>
+                    <button class="btn btn-small" id="change-video-btn"><ion-icon name="refresh-outline"></ion-icon>
+                        Change Video</button>
+                </div>
+                <div class="input-group-row">
+                    <div class="input-group">
+                        <label for="video-fps">Video Original FPS</label>
+                        <input type="number" id="video-fps" step="0.001" title="Extracted from metadata initially">
+                    </div>
+                    <div class="input-group">
+                        <label for="target-fps">Target System FPS</label>
+                        <input type="number" id="target-fps" value="50" step="1">
+                    </div>
+                    <div class="input-group">
+                        <label>Additional FPS</label>
+                        <div id="custom-fps-container">
+                            <!-- Custom FPS fields appended here -->
+                        </div>
+                        <button class="btn btn-small" id="add-fps-btn">+ Add FPS</button>
+                    </div>
+                </div>
+            </section>
+
+            <!-- Single Media Panel -->
+            <div class="media-container single-layout">
+                <section class="glass-panel media-panel full-width">
+                    <h2><ion-icon name="film-outline"></ion-icon> Media Viewer</h2>
+                    <span id="video-filename" class="filename inline-filename">File loaded.</span>
+
+                    <div class="player-container">
+                        <video id="video-player" controls preload="metadata"></video>
+                    </div>
+
+                    <!-- Audio Waveform Container -->
+                    <div class="waveform-tools">
+                        <label for="waveform-zoom"><ion-icon name="search-outline"></ion-icon> Zoom:</label>
+                        <input type="range" id="waveform-zoom" min="10" max="1000" value="50">
+                    </div>
+
+                    <div class="waveform-box">
+                        <div id="waveform-container"></div>
+                        <div id="waveform-timeline"></div>
+                        <div id="frame-grid-overlay" class="frame-grid"></div>
+                    </div>
+
+                    <div class="controls-panel central-controls">
+                        <span class="time-display" id="video-time-display">00:00:00.000 (Frame 0)</span>
+                        <div class="scrub-controls unified">
+                            <span>Fine Scrub:</span>
+                            <button class="btn btn-icon" id="video-prev-frame"
+                                title="-1 Frame based on Video FPS"><ion-icon name="play-back"></ion-icon></button>
+                            <button class="btn btn-icon" id="video-next-frame"
+                                title="+1 Frame based on Video FPS"><ion-icon name="play-forward"></ion-icon></button>
+                            <span>| 20ms Scrub:</span>
+                            <button class="btn btn-icon" id="video-prev-ms" title="-20ms"><ion-icon
+                                    name="play-back-outline"></ion-icon></button>
+                            <button class="btn btn-icon" id="video-next-ms" title="+20ms"><ion-icon
+                                    name="play-forward-outline"></ion-icon></button>
+                        </div>
+                    </div>
+
+                    <div id="sync-points-list" class="sync-points-list">
+                        <!-- Reference points will be injected here via JS -->
+                    </div>
+
+                    <button class="btn btn-small mt-4" id="add-ref-point-btn" style="width: 100%;">
+                        <ion-icon name="add-circle-outline"></ion-icon> Add Reference Point
+                    </button>
+                </section>
+            </div>
+
+            <!-- Results Panel -->
+            <section class="glass-panel results-panel highlight-panel">
+                <h2><ion-icon name="calculator-outline"></ion-icon> Offset Calculation</h2>
+                <div id="calculation-results" class="results-table-container">
+                    <div class="result-box placeholder">Add a Reference Point and set both Visual and Audio sync points
+                        to calculate.</div>
+                </div>
+            </section>
+        </main>
+    </div>
+
+    <script src="script.js"></script>
+</body>
+
+</html>
