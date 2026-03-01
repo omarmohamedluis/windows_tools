@@ -1,0 +1,5 @@
+log.txt
+cohn_db.json
+__pycache__/
+venv/
+.env

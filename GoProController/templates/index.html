@@ -1,0 +1,200 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>GoPro Hero 12 Controller</title>
+    <!-- Google Fonts -->
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&display=swap" rel="stylesheet">
+    <!-- Main CSS -->
+    <link rel="stylesheet" href="{{ url_for('static', filename='style.css') }}">
+    <!-- Phosphor Icons -->
+    <script src="https://unpkg.com/@phosphor-icons/web"></script>
+</head>
+
+<body>
+    <div class="app-container">
+        <!-- Header -->
+        <header class="app-header">
+            <div class="logo">
+                <i class="ph ph-video-camera"></i>
+                <h1>Hero 12 Controller</h1>
+            </div>
+            <div class="header-actions">
+                <button id="btn-show-setup" class="btn btn-secondary glass">
+                    <i class="ph ph-wifi-high"></i> Configurar Conexión
+                </button>
+                <div class="status-indicator">
+                    <div class="dot" id="connection-dot"></div>
+                    <span id="connection-text">Connecting...</span>
+                </div>
+            </div>
+        </header>
+
+        <!-- Setup Modal (Hidden initially) -->
+        <div id="setup-modal" class="modal hidden">
+            <div class="modal-content card glass-card">
+                <div class="modal-header">
+                    <h2>Conectar GoPro al Wi-Fi</h2>
+                    <button id="btn-close-setup" class="btn-icon"><i class="ph ph-x"></i></button>
+                </div>
+                <div class="modal-body">
+                    <p>Enciende tu GoPro, asegúrate de que tiene las conexiones inalámbricas activadas, y dale a
+                        conectar. Nos encargaremos de iniciar la conexión Bluetooth y conectarnos a su red Wi-Fi
+                        automáticamente.</p>
+
+                    <button id="btn-enable-ap" class="btn btn-primary"
+                        style="width: 100%; justify-content: center; margin-bottom: 1rem; font-size: 1.2rem; padding: 1rem;">
+                        <i class="ph ph-broadcast"></i> Conectar a GoPro
+                    </button>
+
+                    <div id="setup-status" class="setup-status"
+                        style="font-size: 1.1rem; text-align: center; margin-top: 1rem;"></div>
+
+                    <hr class="divider">
+                    <p class="small-text">¿Tu PC ya está conectado al Wi-Fi de la GoPro?</p>
+                    <div class="manual-ip-group">
+                        <input type="text" id="manual-ip" placeholder="10.5.5.9" class="form-control manual-ip">
+                        <button id="btn-set-ip" class="btn btn-secondary glass">Forzar IP</button>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <!-- Main Content -->
+        <main class="main-content">
+            <!-- Left Column: Video Preview -->
+            <section class="preview-section card">
+                <div class="preview-header">
+                    <h2>Live Preview</h2>
+                    <button id="toggle-preview" class="btn btn-secondary glass">
+                        <i class="ph ph-monitor-play"></i> Start Preview
+                    </button>
+                </div>
+                <!-- Video Container -->
+                <div class="video-container" id="video-container">
+                    <div class="no-signal">
+                        <i class="ph ph-prohibit"></i>
+                        <p>Preview Offline</p>
+                    </div>
+                    <!-- The Stream will load here when activated -->
+                    <!-- <img src="/video_feed" id="video-stream" style="display:none;" alt="Live Stream"> -->
+                </div>
+            </section>
+
+            <!-- Right Column: Controls & Media -->
+            <div class="side-panel">
+                <!-- Camera Status -->
+                <section class="status-section card glass-card" style="margin-bottom: 1rem; padding: 1rem;">
+                    <div class="status-grid"
+                        style="display: flex; justify-content: space-around; align-items: center; font-size: 1.2rem; font-weight: 500;">
+                        <div class="battery-status" style="display: flex; align-items: center; gap: 0.5rem;">
+                            <i class="ph ph-battery-full" id="icon-battery" style="color: #4ade80;"></i>
+                            <span id="text-battery">--%</span>
+                        </div>
+                        <div class="mode-status" style="display: flex; align-items: center; gap: 0.5rem;">
+                            <i class="ph ph-video-camera" id="icon-mode" style="color: #60a5fa;"></i>
+                            <span id="text-mode">Desconocido</span>
+                        </div>
+                    </div>
+                    <div style="text-align: center; margin-top: 1rem; color: var(--text-muted); font-size: 0.95rem;">
+                        [ Ajustes actuales: <span id="text-res">--</span> | <span id="text-fps">--</span> | <span
+                            id="text-fov">--</span> ]
+                    </div>
+                </section>
+
+                <!-- Camera Settings -->
+                <section class="settings-section card glass-card">
+                    <h2><i class="ph ph-sliders"></i> Camera Settings</h2>
+                    <div class="settings-grid">
+                        <div class="form-group">
+                            <label>Resolution</label>
+                            <select id="sel-resolution" class="form-control">
+                                <option value="26">5.3K (8:7)</option>
+                                <option value="25">5.3K (4:3)</option>
+                                <option value="24">5.3K (16:9)</option>
+                                <option value="27">4K (8:7)</option>
+                                <option value="18">4K (4:3)</option>
+                                <option value="1">4K (16:9)</option>
+                                <option value="4">2.7K (16:9)</option>
+                                <option value="6">1440p (4:3)</option>
+                                <option value="9">1080p (16:9)</option>
+                                <option value="10">900p (4:3)</option>
+                            </select>
+                        </div>
+                        <div class="form-group">
+                            <label>Framerate (FPS)</label>
+                            <select id="sel-fps" class="form-control">
+                                <option value="0">240</option>
+                                <option value="1">120</option>
+                                <option value="2">100</option>
+                                <option value="5">60</option>
+                                <option value="6">50</option>
+                                <option value="8">30</option>
+                                <option value="9">25</option>
+                                <option value="10">24</option>
+                            </select>
+                        </div>
+                        <div class="form-group" style="grid-column: 1 / -1;">
+                            <label>Lente / FOV</label>
+                            <select id="sel-fov" class="form-control">
+                                <option value="1">HyperView</option>
+                                <option value="3">SuperView</option>
+                                <option value="0">Wide</option>
+                                <option value="4">Linear</option>
+                                <option value="8">Linear + HL</option>
+                                <option value="9">Narrow</option>
+                            </select>
+                        </div>
+                        <div class="form-group" style="grid-column: 1 / -1;">
+                            <label>Modo de Cámara</label>
+                            <select id="sel-mode" class="form-control">
+                                <option value="0">Vídeo</option>
+                                <option value="1">Foto</option>
+                                <option value="2">Timelapse</option>
+                            </select>
+                        </div>
+                        <button id="btn-apply-settings" class="btn btn-secondary glass"
+                            style="grid-column: 1 / -1; justify-content: center; margin-top: 0.5rem;">
+                            <i class="ph ph-paper-plane-right"></i> Enviar Cambios a la GoPro
+                        </button>
+                    </div>
+                </section>
+
+                <!-- Recording Controls -->
+                <section class="controls-section card glass-card">
+                    <h2>Controls</h2>
+                    <div class="shutter-controls">
+                        <button id="btn-record" class="btn-shutter btn-record">
+                            <div class="inner-circle"></div>
+                        </button>
+                        <p id="recording-status">Ready to Record</p>
+                    </div>
+                </section>
+
+                <!-- Media Gallery -->
+                <section class="media-section card">
+                    <div class="media-header">
+                        <h2>Media Gallery</h2>
+                        <button id="btn-refresh-media" class="btn btn-icon">
+                            <i class="ph ph-arrows-clockwise"></i>
+                        </button>
+                    </div>
+                    <div class="media-list" id="media-list">
+                        <!-- Items will be populated here via JS -->
+                        <div class="loading-state">
+                            <div class="spinner"></div>
+                            <p>Loading media...</p>
+                        </div>
+                    </div>
+                </section>
+            </div>
+        </main>
+    </div>
+
+    <!-- Main Logic -->
+    <script src="{{ url_for('static', filename='main.js') }}"></script>
+</body>
+
+</html>
